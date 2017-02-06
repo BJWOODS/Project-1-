@@ -30,7 +30,19 @@ tweetsInfo = []
 @app.route('/') #python decorator
 #gets all IDs from json, caps at 20
 
+
 def index(gettyImg = None):
+    
+    accessToken = os.getenv("accessToken")
+    accessTokSec = os.getenv("accessTokSec")
+    consumer_token = os.getenv("consumer_token")
+    consumer_secret = os.getenv("consumer_secret")
+    max_tweets = 30
+    auth = tweepy.OAuthHandler(consumer_token, consumer_secret)
+    auth.set_access_token(accessToken, accessTokSec)
+    api = tweepy.API(auth)  
+    getty_api_key = os.getenv("getty_api_key")
+    
     unique = False #boolean used for checking uniques
     query = ['ramen', 'college','travel','life'] #terms to query twitter
     word = random.choice(query)

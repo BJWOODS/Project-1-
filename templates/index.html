@@ -1,8 +1,34 @@
 <html>
-    <head></head>
+    <head>
+         <style>
+    
+         div.transbox
+         {
+             margin:30px;
+             background-color: #ffffff;
+             border: 1px solid black;
+             opacity: 0.6;
+             filter: alpha(opacity=60);
+         }
+         
+         div.transbox p {
+         margin: 5%;
+         font-weight: bold;
+         color: #000000;
+}
+    </style>
+    </head>
     <body>
     <h1>Hello templates! {{random}}</h1>
-    <img src="./static/green_dragon_v2_by_sandara-d9l3myt.jpg"/>
+    <h2>Tweet: {{tString}} </h2>
+    {{gettyImg}}
+     <div class="background">
+        <img src = '{{gettyImg}}'>
+     <div class="transbox">
+        <p>This is some text that is placed in the transparent box.</p>
+    </div>
+    </div>
+    <!--<img src="./static/green_dragon_v2_by_sandara-d9l3myt.jpg"/>-->
     </body>
 </html>
 

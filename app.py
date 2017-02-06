@@ -2,7 +2,7 @@ import flask
 import os
 import random
 import tweepy
-import json
+import simplejson
 import requests
 
 idUniques = []
@@ -12,16 +12,16 @@ imgUniques = []
 
 #git push heroku master
 app = flask.Flask(__name__)
-accessToken =  "1424806820-kMUoLxUIubxJJ8gXwsVNrPUSaoXtQ0gXzOSTbyZ"
-accessTokSec = "LxQV4pl0kB3olfxWRb9nrtSmtGjLkf1tPhE2gJhuOzB7d"
-consumer_token = "Dg8muOuQWuqjdlyPEmvyDBhpO"
-consumer_secret = "7VmV5URL9vSX2fMZHLDpHIH8boRI9wt6UP3WBolGW1EdxmvNGg"
+accessToken =  os.getenv("accessToken")
+accessTokSec = os.getenv("accessTokSec")
+consumer_token = os.getenv("consumer_token")
+consumer_secret = os.getenv("consumer_secret")
 max_tweets = 30
 auth = tweepy.OAuthHandler(consumer_token, consumer_secret)
 auth.set_access_token(accessToken, accessTokSec)
 api = tweepy.API(auth)  
 
-getty_api_key = "ng993nc5jzchjde38sa4fztc"
+getty_api_key = os.getenv("getty_api_key")
 count = 0
 tweets = []
 
@@ -84,6 +84,7 @@ def index(gettyImg = None):
 app.run(
     port=int(os.getenv('PORT',8080)),
     host=os.getenv('IP','0.0.0.0')
+    
 
 )
     

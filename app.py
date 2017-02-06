@@ -2,7 +2,7 @@ import flask
 import os
 import random
 import tweepy
-import simplejson
+import simplejson as json
 import requests
 
 idUniques = []
@@ -12,19 +12,19 @@ imgUniques = []
 
 #git push heroku master
 app = flask.Flask(__name__)
-accessToken =  os.getenv("accessToken")
-accessTokSec = os.getenv("accessTokSec")
-consumer_token = os.getenv("consumer_token")
-consumer_secret = os.getenv("consumer_secret")
+accessToken =  "1424806820-kMUoLxUIubxJJ8gXwsVNrPUSaoXtQ0gXzOSTbyZ"#os.getenv("accessToken")
+accessTokSec = "LxQV4pl0kB3olfxWRb9nrtSmtGjLkf1tPhE2gJhuOzB7d" #os.getenv("accessTokSec")
+consumer_token = "Dg8muOuQWuqjdlyPEmvyDBhpO" #os.getenv("consumer_token")
+consumer_secret = "7VmV5URL9vSX2fMZHLDpHIH8boRI9wt6UP3WBolGW1EdxmvNGg"#os.getenv("consumer_secret")
 max_tweets = 30
 auth = tweepy.OAuthHandler(consumer_token, consumer_secret)
 auth.set_access_token(accessToken, accessTokSec)
 api = tweepy.API(auth)  
 
-getty_api_key = os.getenv("getty_api_key")
+getty_api_key = "ng993nc5jzchjde38sa4fztc" #os.getenv("getty_api_key")
 count = 0
-tweets = []
-
+tweets = dict()
+tweetsInfo = []
             
             
 @app.route('/') #python decorator
@@ -41,17 +41,23 @@ def index(gettyImg = None):
     gettyList = []
     count = 0
     res = requests.get(url_test, headers=headers)
-    
+    j=0
     data  = res.json()
     for term in query:
         searched_tweets = [status for status in tweepy.Cursor(api.search, q=term, lang="en").items(max_tweets)]
         for tweet in searched_tweets:
             if (not tweet.retweeted) and (tweet not in tweets) and ('RT @' not in tweet.text) and ('media' not in tweet.entities): 
             #'https:' not in tweet.text:
-                print "Hello"
-                tweets.append(tweet.text) 
                 
-                   
+                tweets[j] = [tweet.text,tweet.id_str,tweet.user.name]
+                j+=1
+                
+               
+               # clickPick = tweet.author.profile_image_url_https
+                
+                
+                
+    
                            
            
     
@@ -60,7 +66,10 @@ def index(gettyImg = None):
         print element['id']
     global count
     count = random.randrange(0, len(tweets))
-    tString = tweets[count]
+    tString = tweets[count][0]
+    uStringID = tweets[count][1]
+    uStringU = tweets[count][2]
+  
     #count = count + 1 #Could use for linear iteration through twitter list
     
     for element in data['images']:
@@ -77,7 +86,8 @@ def index(gettyImg = None):
         
     return flask.render_template("index.html", 
         tString = tString, 
-        gettyImg= "http://media.gettyimages.com/photos/-id"+gettyImg)
+        gettyImg= "http://media.gettyimages.com/photos/-id"+gettyImg,uStringID=uStringID,uStringU = uStringU)
+        #user=user,user_id=user_id
 
 
     
